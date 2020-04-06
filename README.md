@@ -35,9 +35,6 @@ The other parameters are set by default, the most critical ones are:
 - The maximum frequency of the frequency grid
 - The unpenalized vectors: linear predictors that are known to be in the data (like offsets, trends, activity models). 
 
+### Tutorial
 
-
-
-
-
-
+The notebook l1_periodogram_tutorial_I will walk you through the different features of the code
