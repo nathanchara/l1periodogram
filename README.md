@@ -2,7 +2,7 @@
 
 This repository contains a Python implementation of the l1 periodogram as 
 described in Hara, Boué, Laskar, Correia 2017, MNRAS, Vol. 464, Issue 1, p.1220-1246, 
-please cite this paper if you are using the code. 
+please cite this paper if you are using the code. We also add a few features.
 
 ### Description
 
