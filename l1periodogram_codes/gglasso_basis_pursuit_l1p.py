@@ -2,7 +2,7 @@
 
 # Copyright 2020 Alessandro Mari and Nathan Hara
 #
-# This file is part of spell1.
+# This file is part of the l1periodogram code.
 #
 # rvmodel is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
