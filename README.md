@@ -29,7 +29,7 @@ python -m numpy.f2py -c gglasso.f90 -m gglasso_wrapper
 The mandatory inputs are: 
 - A time series
 - The epochs of observation of the time series
-- A covariance model for the noise. If you want to use the nominal uncertainties, use 
+- A covariance model for the noise.
 
 The other parameters are set by default, the most critical ones are:
 - The maximum frequency of the frequency grid
