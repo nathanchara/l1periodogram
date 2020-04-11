@@ -18,7 +18,7 @@ Here small number means small compared to the number of observations.
 The code is based on the Basis Pursuit minimization problem (Chen & Donoho 1998). 
 In the present code, the Basis Pursuit problem can be solved with 
 - The LARS algorithm (Efron, Hastie, Johnston, Tibshirani, R. 2004, Ann. Statist., Volume 32, Number 2, 407-499.)
-- The gglasso algorithm (Yang & Zou 2015. Statistics and Computing. 25(6), 1129-1141.)
+- The gglasso algorithm (Yang & Zou 2014. Statistics and Computing. 25(6), 1129-1141.)
 To use the latter, run the following command in the directory where the files of the present distributions are copied.
 ```bash
 python -m numpy.f2py -c gglasso.f90 -m gglasso_wrapper
