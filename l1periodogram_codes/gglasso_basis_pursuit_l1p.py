@@ -15,11 +15,14 @@
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
-# along with spell1.  If not, see <http://www.gnu.org/licenses/>.
+# along with l1periodogram.  If not, see <http://www.gnu.org/licenses/>.
 
 
 import numpy as np
-import gglasso_wrapper as glasso_func
+try: 
+    import gglasso_wrapper as glasso_func
+except:
+    print('To use gglasso, run the command ''python -m numpy.f2py -c gglasso.f90 -m gglasso_wrapper'' in the directory l1periodogram_codes')
 import matplotlib.pyplot as plt
 
 
