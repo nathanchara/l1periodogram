@@ -38,3 +38,7 @@ The other parameters are set by default, the most critical ones are:
 ### Getting started
 
 Download the l1periodogram repository onto your local computer. The notebook l1_periodogram_tutorial_I will walk you through the different features of the code.
+
+
+### Credits
+Written by Nathan C. Hara, with contributions from Alessandro R. Mari
