@@ -17,9 +17,6 @@
 # You should have received a copy of the GNU General Public License
 # along with l1periodogram.  If not, see <http://www.gnu.org/licenses/>.
 
-import sys
-sys.path.insert(0, '/Users/nathan/Documents/Python_R/lars_phi')
-
 import pandas as pd
 import numpy  as np
 import filter_poly
@@ -34,14 +31,16 @@ def create_dataset(dataset_names,
     Concatenates the data from different files 
     and puts them in 
     chronologic order, puts the data in m/s and
-    removes outliers
+    removes outliers on original and detrended data.
     INPUTS:
         - dataset_names: path to the files. 
           Columns 1, 2, 3 of the files should be
           time (rjd), radial velocity, errror on rv
         - points deviating from the median by
           more than outlier_cond * MAD/0.67 are removed
-          from the data sets (MAD = median absolute deviation)
+          from the data sets (MAD = median absolute deviation).
+          Then, we fit a linear trend in the data and repeat the exclusion of points deviating from the median by
+          more than outlier_cond * MAD/0.67 on the residuals. 
           
     Outputs:
         - T: times of the combined data sets
