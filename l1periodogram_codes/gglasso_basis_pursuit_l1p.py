@@ -283,7 +283,6 @@ def gglasso(y, X, bp_tol_in, beta_init=None, weights=None,
         b = -a * lambda_min + y1
         lambda_c = (bp_tol_in - b)/a  #np.sqrt(lambda_min*lambda_max)
 
-        plt.figure()
         #------------- Iterate ----------------# 
         while np.abs(res_norm - bp_tol_in) > bp_bound_numerical_tol and count<maxiter:
             
