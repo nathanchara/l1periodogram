@@ -1,8 +1,8 @@
 # l1 periodogram
 
 This repository contains a Python implementation of the l1 periodogram as 
-described in Hara, Boué, Laskar, Correia 2017, MNRAS, Vol. 464, Issue 1, p.1220-1246, 
-please cite this paper if you are using the code. We also add a few features.
+described in Hara, Boué, Laskar, Correia 2017, MNRAS, Vol. 464, Issue 1, p.1220-1246, with a few more features.
+please cite this paper if you are using the code. 
 
 ### Description
 
@@ -12,8 +12,8 @@ and retrieves a figure which has a similar aspect but has fewer peaks due to ali
 It is primarily designed for the search of exoplanets in radial velocity data, but can be also used for other purposes. 
 
 The principle of the algorithm is to search for a representation of the input signal 
-as a sum of a small number of sinusoidal components, or a sparse reprentation in frequency. 
-Here small number means small compared to the number of observations. 
+as a sum of a small number of sinusoidal components, that is a representation which is sparse in the frequency domain. 
+Here, "small number" means small compared to the number of observations. 
 
 The code is based on the Basis Pursuit minimization problem (Chen & Donoho 1998). 
 In the present code, the Basis Pursuit problem can be solved with 
