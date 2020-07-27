@@ -40,6 +40,8 @@ The other parameters are set by default, the most critical ones are:
 
 Download the l1periodogram repository onto your local computer. The notebook l1_periodogram_tutorial_I.pynb will walk you through the different features of the code.
 
+You wwill also find a notebook dedicated to reproducing the results of Hara, Bouchy, Stalport, Boisse et al. 2020, A&A, 636, L6, called l1_periodogram_HD158259_analysis.ipynb
+
 
 ### Credits
 Written by Nathan C. Hara, with contributions from Alessandro R. Mari
