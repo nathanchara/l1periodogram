@@ -18,9 +18,9 @@
 # along with l1periodogram.  If not, see <http://www.gnu.org/licenses/>.
 
 import numpy as np
-import fastlinsquare_cholesky
 import math as ma
 from scipy.optimize import minimize
+from l1periodogram import fastlinsquare_cholesky
 
 # ------------- Minimizations ------------- #
 

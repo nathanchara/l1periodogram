@@ -19,7 +19,7 @@
 
 import pandas as pd
 import numpy  as np
-import filter_poly
+from l1periodogram import filter_poly
 
 
 def create_dataset(dataset_names, 

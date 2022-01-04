@@ -20,7 +20,7 @@
 
 import numpy as np
 try: 
-    import gglasso_wrapper as glasso_func
+    from l1periodogram import gglasso_wrapper as glasso_func
 except:
     print('To use gglasso, run the command ''python -m numpy.f2py -c gglasso.f90 -m gglasso_wrapper'' in the directory l1periodogram_codes, then restart the kernel.')
 import matplotlib.pyplot as plt

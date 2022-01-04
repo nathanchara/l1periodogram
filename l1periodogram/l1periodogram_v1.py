@@ -22,13 +22,8 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import time
-#import resource
 
-import significance
-import covariance_matrices
-import lars_l1p
-import gglasso_basis_pursuit_l1p
-#import gglasso_basis_pursuit_test
+from l1periodogram import significance, covariance_matrices, lars_l1p, gglasso_basis_pursuit_l1p
 
 
 
