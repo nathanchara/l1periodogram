@@ -53,3 +53,5 @@ html_theme_options = {
 }
 jupyter_execute_notebooks = "off"
 execution_timeout = -1
+html_extra_path = ["robots.txt"]
+
