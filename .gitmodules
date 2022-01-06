@@ -1,0 +1,3 @@
+[submodule "python-type-stubs"]
+	path = python-type-stubs
+	url = git@github.com:microsoft/python-type-stubs
