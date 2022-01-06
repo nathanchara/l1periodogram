@@ -1,0 +1,36 @@
+cff-version: 1.2.0
+title: L1 Periodogram
+message: 'If you use this software, please cite it as below.'
+type: software
+authors:
+  - given-names: Nathan C.
+    family-names: Hara
+    email: nathan.hara@unige.ch
+    affiliation: University of Geneva
+  - given-names: Denis
+    family-names: Rosset
+    email: physics@denisrosset.com
+    affiliation: University of Geneva
+    orcid: 'https://orcid.org/0000-0003-0444-7558'
+  - given-names: Alessandro R.
+    family-names: Mari
+identifiers:
+  - type: url
+    value: 'https://ascl.net/2112.024'
+    description: ASCL Code Record
+repository: 'https://github.com/nathanchara/l1periodogram'
+abstract: >-
+  The l1 periodogram searches for periodicities in
+  unevenly sampled time series. It can be used
+  similarly as a Lomb-Scargle periodogram, and
+  retrieves a figure which has a similar aspect but
+  has fewer peaks due to aliasing. It is primarily
+  designed for the search of exoplanets in radial
+  velocity data, but can be also used for other
+  purposes. The principle of the algorithm is to
+  search for a representation of the input signal as
+  a sum of a small number of sinusoidal components,
+  that is a representation which is sparse in the
+  frequency domain. Here, "small number" means small
+  compared to the number of observations.
+license: GPL-3.0

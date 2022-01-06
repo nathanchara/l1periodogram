@@ -26,41 +26,46 @@ def create_dataset(dataset_names,
                    outlier_cond = 3.5,
                    sigmas_inst = None, 
                    bintimescale = 0,
-                   trenddegree=2):
+                   trenddegree: int=2):
     
     '''
     Concatenates the data from different files 
     and puts them in 
     chronologic order, puts the data in m/s and
     removes outliers on original and detrended data.
-    INPUTS:
-        - dataset_names: path to the files. 
-          Columns 1, 2, 3 of the files should be
-          time (rjd), radial velocity, errror on rv
-        - outlier_cond: points deviating from the median by
-          more than outlier_cond * MAD/0.67 are removed
-          from the data sets (MAD = median absolute deviation).
-          Then, we fit a linear trend in the data and repeat the exclusion of points deviating from the median by
-          more than outlier_cond * MAD/0.67 on the residuals.
-        - sigmas_inst: list of additional jitters per instrument (in m/s)
-        - bintimescale: data points taken within a time < bintimescale are binned
-        - trenddegree: Outliers are removed beforee and after a polynomial trend of 
-        degree trenddegree has been fitted
+
+    Args:
+        dataset_names: path to the files. 
+                       Columns 1, 2, 3 of the files should be
+                       time (rjd), radial velocity, errror on rv
+        outlier_cond: points deviating from the median by
+                      more than outlier_cond * MAD/0.67 are removed
+                      from the data sets (MAD = median absolute deviation).
+                      Then, we fit a linear trend in the data and repeat the exclusion of points deviating from the median by
+                      more than outlier_cond * MAD/0.67 on the residuals.
+        sigmas_inst: list of additional jitters per instrument (in m/s)
+        bintimescale: data points taken within a time < bintimescale are binned
+        trenddegree: Outliers are removed beforee and after a polynomial trend of 
+                     degree trenddegree has been fitted
             
-    Outputs:
-        - T: times of the combined data sets
-        - y: data of the combined data set
-        - err: error of the combined data set
-        - offsets: matrix (Number of measure times x number of files) 
-                   its elements are 0 or 1 the row i, column j element 
-                   is equal to 1 if the measurement 
-                   at time T[i] is from file j and 0 otherwise
-        - list_dict_ancillary_variables:
-            list whose elements are dictionary,one 
-            per file. The keys are the name of the 
-            variables and the values are the list of values
-            of the corresponding values in the file in np.array format
-          
+    Returns
+    -------
+      T: 
+        times of the combined data sets
+      y: 
+        data of the combined data set
+      err: 
+        error of the combined data set
+      offsets: matrix
+        matrix (Number of measure times x number of files) 
+        its elements are 0 or 1 the row i, column j element 
+        is equal to 1 if the measurement 
+        at time T[i] is from file j and 0 otherwise
+      list_dict_ancillary_variables:
+        list whose elements are dictionary,one 
+        per file. The keys are the name of the 
+        variables and the values are the list of values
+        of the corresponding values in the file in np.array format
     '''
 
     T = np.array([])
