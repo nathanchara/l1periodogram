@@ -8,3 +8,8 @@ Public API
    :undoc-members:
       
 .. autofunction:: l1periodogram.covariance_matrices.covar_mat
+
+.. autofunction:: l1periodogram.lars_l1p.lar
+
+.. autoclass:: l1periodogram.lars_l1p.LarReturnType
+   :members:

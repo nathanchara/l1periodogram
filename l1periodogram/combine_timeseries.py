@@ -20,19 +20,19 @@
 import pandas as pd
 import numpy  as np
 from l1periodogram import filter_poly
-
+from typing import Union
 
 def create_dataset(dataset_names, 
                    outlier_cond = 3.5,
                    sigmas_inst = None, 
                    bintimescale = 0,
-                   trenddegree: int=2):
+                   trenddegree: int = 2):
     
     '''
-    Concatenates the data from different files 
-    and puts them in 
-    chronologic order, puts the data in m/s and
-    removes outliers on original and detrended data.
+    Concatenates the data from different files
+
+    Concatenates the data from different files and puts them in chronologic order,
+    puts the data in m/s and removes outliers on original and detrended data.
 
     Args:
         dataset_names: path to the files. 
@@ -97,7 +97,7 @@ def create_dataset(dataset_names,
             T1 =   np.array(df.iloc[:,0])  #Time array
             if bintimescale>0:
                 #nt1 = len(T1)
-                ind = []
+                ind: Union[np.ndarray, list] = []
                 i=0
                 #dfs = df
 #                while i < nt1:
