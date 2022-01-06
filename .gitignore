@@ -6,3 +6,5 @@ dist/
 *.so
 .ipynb_checkpoints/
 /notebooks/*.pdf
+/.idea/
+/docs/_build/
