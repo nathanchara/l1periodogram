@@ -1,0 +1,6 @@
+[build-system]
+requires = ["setuptools",
+#            "setuptools_scm>=6.2",
+            "wheel",
+]
+build-backend = 'setuptools.build_meta' # cargo-culting this for now

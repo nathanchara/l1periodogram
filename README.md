@@ -20,10 +20,14 @@ In the present code, the Basis Pursuit problem can be solved with
 - The LARS algorithm (Efron, Hastie, Johnston, Tibshirani, R. 2004, Ann. Statist., Volume 32, Number 2, 407-499.)
 - The gglasso algorithm (Yang & Zou 2014. Statistics and Computing. 25(6), 1129-1141.)
 To use the latter, run the following command in the l1periodogram_codes folder. 
+
+### Installation
+
+Go to the repository root folder, and run:
+
 ```bash
-python -m numpy.f2py -c gglasso.f90 -m gglasso_wrapper
+python setup.py install
 ```
-When using a notebook, restart the kernel after running this command.
 
 ### Necessary inputs
 
@@ -38,10 +42,13 @@ The other parameters are set by default, the most critical ones are:
 
 ### Getting started
 
-Download the l1periodogram repository onto your local computer. The notebook l1_periodogram_tutorial_I.pynb will walk you through the different features of the code. The notebook l1_periodogram_tutorial_II.pynb gets deeper into the details of what the code does. 
+Download the l1periodogram repository onto your local computer. The notebook `l1_periodogram_tutorial_I.pynb` will walk you through the different features of the code. The notebook `l1_periodogram_tutorial_II.pynb` gets deeper into the details of what the code does. 
 
-You will also find a notebook dedicated to reproducing the results of Hara, Bouchy, Stalport, Boisse et al. 2020, A&A, 636, L6, called l1_periodogram_HD158259_analysis.ipynb
+You will also find a notebook dedicated to reproducing the results of Hara, Bouchy, Stalport, Boisse et al. 2020, A&A, 636, L6, called `l1_periodogram_HD158259_analysis.ipynb`
 
 
 ### Credits
+
 Written by Nathan C. Hara, with contributions from Alessandro R. Mari
+
+Python packaging by Denis Rosset.

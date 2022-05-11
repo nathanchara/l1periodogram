@@ -16,52 +16,98 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with l1periodogram.  If not, see <http://www.gnu.org/licenses/>.
-"""
-Least angle regression algorithm
-
-Computes the least angle regression or lasso 
-of data y in dictionary X based on Efron et al 2004
-
-
-INPUTS:
-    - y: 1D np array with N elements
-    - X: 2D np array with N x M elements
-    - lasso: computes the lasso solution if set to 1
-    - tol: Convergence tolerance, iteration stop if
-                norml2(y-model)/norml2(y) > tol
-    - verbose: prints aindex of added and dropped variables
-    - return_all_active_sets: if True the lar function returns
-    not only the last active set but a list of all the active sets
-    as the lars solution is explored.
-
-OUTPUTS: 
-    - active_set: indices of the lar/lasso solution
-    with non zero coefficients
-    - betas: coefficients that are non zero
-    - Cs: Values of the absolute maximum correlation of 
-    X columns with the residuals at each iteration
-      with the residuals
-    - normres_arr: ratio of the residual norm
-    divided by the data norm
-    - gammas: Values of lars/lasso steps at each iteration
-    - model: output model 
-    - Xact: matrix of active predictors
-@author: Nathan Hara 25 January 2019
-"""
 
 import numpy as np
 import math
+from typing import Any, Literal, Tuple, TypedDict, Union
 #import matplotlib.pyplot as plt
 #import time
 
 #Global variable
 
 #Values x such that |x|<=practical_zero are considered zero
-practical_zero = 1e-13 
+practical_zero = 1e-13
+
+varnames = ['active_set', 'betas', 'Cs','it', 'normres_arr',
+            'gammas', 'model', 'Xact','norml1betas',
+            'active_set_history', 'betas_history']
+
+class LarReturnType(TypedDict):
+    """
+    Return type for lar
+
+    Attributes
+    ----------
+    active_set:
+       Indices
+    betas:
+       coefficients that are non zero
+    Cs:
+       Values of the absolute maximum correlation of X columns with the residuals at each iteration
+    normres_arr:
+       Ratio of the residual norm divided by the data norm
+    gammas:
+       Values of lars/lasso steps at each iteration
+    model:
+       output model
+    Xact:
+       matrix of active predictors
+
+    """
+    active_set: Any # indices of the lar/lasso solution with non zero coefficients
+    betas: Any # coefficients that are non zero
+    Cs: Any # Values of the absolute maximum correlation of X columns with the residuals at each iteration
+    it: Any
+    normres_arr: Any  # Ratio of the residual norm divided by the data norm
+    gammas: Any # Values of lars/lasso steps at each iteration
+    model: Any # output model
+    Xact: Any # matrix of active predictors
+    norml1betas: Any
+    active_set_history: Any
+    betas_history: Any
+
+def lar(y, X, lasso: int = 1, tol: float = 0.001,
+        verbose: int = 0, maxiter: Union[int, Literal['default']]='default') -> LarReturnType:
+    """
+    Least angle regression algorithm
+
+    Computes the least angle regression or lasso of data y in dictionary X based on :cite:t:`Efron2004`
+
+    TODO:
+       this argument is missing
+       - return_all_active_sets: if True the lar function returns
+        not only the last active set but a list of all the active sets
+        as the lars solution is explored.
+        The return type
+
+    Args:
+        y: 1D np array with N elements
+        X: 2D np array with N x M elements
+        lasso: computes the lasso solution if set to 1
+        tol: Convergence tolerance, iteration stop if ``norml2(y-model)/norml2(y) > tol``
+        verbose: prints aindex of added and dropped variables
 
 
-def lar(y,X,lasso=1, tol=0.001, verbose = 0, maxiter='default'):
-    
+    Returns
+    -------
+        active_set:
+            indices of the lar/lasso solution with non zero coefficients
+        betas:
+            coefficients that are non zero
+        Cs:
+            Values of the absolute maximum correlation of X columns with the residuals at each iteration
+        normres_arr:
+            Ratio of the residual norm divided by the data norm
+        gammas:
+            Values of lars/lasso steps at each iteration
+        model:
+            output model
+        Xact:
+            matrix of active predictors
+
+    @author: Nathan Hara 25 January 2019
+    """
+
     if verbose>=2:
         if lasso == 1:
             print('---------------- Begin LARS iterations----------------')
@@ -91,8 +137,8 @@ def lar(y,X,lasso=1, tol=0.001, verbose = 0, maxiter='default'):
     gamma = 1
     
     
-    active_set_history = [[]]
-    betas_history = [[]]
+    active_set_history: Any = [[]]
+    betas_history: Any = [[]]
     
     #Find vector most correlated with the data
     Xact, C_index, maxcorr, sj = find_max_corr(Xt,y)
@@ -217,18 +263,20 @@ def lar(y,X,lasso=1, tol=0.001, verbose = 0, maxiter='default'):
         print('Maximum number of iterations reached in lars, exit')
    
 
-    varnames = ['active_set', 'betas', 'Cs','it', 'normres_arr',
-           'gammas', 'model', 'Xact','norml1betas',
-           'active_set_history', 'betas_history']
-    
-    variables = [active_set, betas, Cs,it, normres_arr,
-           gammas, model, Xact,norml1betas,
-           active_set_history, betas_history]
-    
-    dict_out = dict(zip(varnames,variables))
-    
-    return(dict_out)
-    
+    return {
+        'active_set': active_set,
+        'betas': betas,
+        'Cs': Cs,
+        'it': it,
+        'normres_arr': normres_arr,
+        'gammas': gammas,
+        'model': model,
+        'Xact': Xact,
+        'norml1betas': norml1betas,
+        'active_set_history': active_set_history,
+        'betas_history': betas_history
+    }
+
         
         
 def compute_lar_direction(Xact):

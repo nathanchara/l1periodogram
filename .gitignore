@@ -1,0 +1,10 @@
+__pycache__/
+*.py[cod]
+build/
+dist/
+*.egg-info/
+*.so
+.ipynb_checkpoints/
+/notebooks/*.pdf
+/.idea/
+/docs/_build/
