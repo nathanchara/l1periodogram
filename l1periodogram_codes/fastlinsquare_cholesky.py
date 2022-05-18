@@ -63,7 +63,7 @@ def fastchi2lin(A,W2,y,check_invertibility = True,
     
     
     
-def fastchi2lin_V(A,V,y, full_chi2 = False):
+def fastchi2lin_V(A,V,y, full_chi2 = False, compute_covar=False):
     
     condn = np.linalg.cond(V)
     
@@ -72,10 +72,14 @@ def fastchi2lin_V(A,V,y, full_chi2 = False):
         WA = np.linalg.solve(Lv, A)
         G = WA.T.dot(WA)
         condn = np.linalg.cond(G)
+        newy = np.linalg.solve(Lv, y)
+        
+        #print('GV')
+        #print(G)
     
         if condn<1e13:
             #print('G',condn)
-            b = WA.T.dot(y)
+            b = WA.T.dot(newy)
             L = np.linalg.cholesky(G)  
             u = np.linalg.solve(L,b)  
             v = np.linalg.solve(L.T,u) 
@@ -88,20 +92,25 @@ def fastchi2lin_V(A,V,y, full_chi2 = False):
         if full_chi2:
             #condn = np.linalg.cond(Lv)
             #if condn>1e-13:
-            Wy = np.linalg.solve(Lv, y) 
-            chi2truncated = np.dot(Wy, Wy) - chi2truncated
+            #newy = np.linalg.solve(Lv, y) 
+            chi2truncated = np.dot(newy, newy) - chi2truncated
             #else:
             #    chi2truncated = np.nan
+        if compute_covar:
+            Covar = np.linalg.inv(G)
                 
     else:
         chi2truncated = np.nan
         v = np.nan
+        Covar  = np.nan
+
+    if compute_covar:
+        return(chi2truncated,v, Covar)
+    else:
+        return(chi2truncated,v)
     
-    return(chi2truncated,v)
     
-    
-    
-    
+
     
     
     

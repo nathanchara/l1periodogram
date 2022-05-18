@@ -170,23 +170,89 @@ def covar_mats(T,err, sigmaWs, sigmaRs,sigma_calibs,taus
     
     
 def covar_mats_period(T,err, sigmaWs, sigmaRs,sigma_calibs,  
-                      taus,sigmaqps, Pqps, expdecays,
+                      taus,sigmaqps, periodqps, decaytimes,
                       tol = 1e-4,**kwargs):
+    
+    
+    d = crossval_grid_period(sigmaWs,sigmaRs, taus, sigma_calibs,
+                                    sigmaqps, periodqps, 
+                                    decaytimes)
    
-    nmats = len(sigmaWs)
+    nmats = len(d['sigmaWs'])
+    ispositivedefinite = np.zeros(nmats, dtype=bool)
     Vs = []
     for i in range(nmats):
         Vrot = covar_mat(T,T*0, 0, 
-                            sigmaqps[i],0,
-                            expdecays[i],Prot=Pqps[i], tol = tol,**kwargs)
+                            d['sigmaQPs'][i],0,
+                            d['decaytimeQPs'][i],Prot=d['periodQPs'][i], 
+                            tol = tol,**kwargs)
         
-        Vred = covar_mat(T,err, sigmaWs[i], 
-                            sigmaRs[i],sigma_calibs[i],
-                            taus[i],Prot=-1, tol = tol,**kwargs)
+        Vred = covar_mat(T,err, d['sigmaWs'][i], 
+                            d['sigmaRs'][i],d['sigmaCs'][i],
+                            d['decaytimeRs'][i],Prot=-1, tol = tol,**kwargs)
         
-        Vs.append(Vrot + Vred)
+        V = Vrot + Vred
+        
+        #Check if the created covariance matrix is positive definite
+        s, vh = np.linalg.eigh(V)
+        mins = np.min(s)
+        if mins > 1e-13:
+            ispositivedefinite[i] = True              
+            Vs.append(V)
+                
+    
+    varnames = ['sigmaWs', 'sigmaRs', 'sigmaCs', 'decaytimeRs', 
+            'sigmaQPs', 'periodQPs', 'decaytimeQPs']
+    for k in varnames:
+        d[k] = [val for i,val in enumerate(d[k]) if ispositivedefinite[i]]
+
   
-    return(Vs)   
+    return(Vs, d)   
+
+
+
+
+def crossval_grid_period(sigmaW, sigmaR, tau, sigmaC,
+                         sigmaqp, periodqp, decaytime):
+    
+    dictvar = {}
+    dictvar['sigmaWs'] = []
+    dictvar['sigmaRs'] = []
+    dictvar['decaytimeRs'] = []
+    dictvar['sigmaCs'] = []
+    dictvar['sigmaQPs']  = []
+    dictvar['periodQPs'] = []
+    dictvar['decaytimeQPs'] = []
+    
+    
+    for w in sigmaW:
+        for c in sigmaC:
+            for r in sigmaR:
+                taulist = tau.copy()
+                if r==0:
+                    taulist = [0]
+                for t in taulist:
+                    for sq in sigmaqp:
+                        periodqplist  = periodqp.copy()
+                        decaytimelist = decaytime.copy()
+                        if sq==0:
+                            periodqplist = [0]
+                            decaytimelist = [0]
+                        for p in periodqplist:
+                            for d in decaytimelist:
+                               
+                                dictvar['sigmaWs'].append(w)
+                                dictvar['sigmaRs'].append(r)
+                                dictvar['decaytimeRs'].append(t)
+                                dictvar['sigmaCs'].append(c)  
+                                dictvar['sigmaQPs'].append(sq)
+                                dictvar['periodQPs'].append(p)
+                                dictvar['decaytimeQPs'].append(d)
+    
+    return(dictvar)
+
+
+
     
     
 def invert_covmatrix(V,tol=1e-13):

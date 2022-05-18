@@ -24,7 +24,7 @@ from scipy.optimize import minimize
 
 # ------------- Minimizations ------------- #
 
-def residuals( Tm, y, W, omegas_planets, Mat,
+def residuals(Tm, y, W, omegas_planets, Mat,
               return_matrix= False, return_only_chi2 = False):
    """
    Computes the residuals after fitting sine functions at frequencies omegas_planets to data y
@@ -536,3 +536,159 @@ def model_derivs(T,omegas, linparams, M0):
     md[:,3*Np:] = M0
     
     return(md, md2)
+
+
+
+
+def training_sets(N, Nsim=30, Training_prop = 0.6, method = 'random'):
+    
+    '''
+    Define a list with Nsim elements, each of them are np arrays of size 
+    int(Training_prop*N) of indices between 0 and N-1
+    This defines the training set indices for cross validation
+    
+    INPUTS
+    - Nsim: number of arrays of training set indices
+    - Training_prop: proportion of the dataset that will be included 
+      in the training set
+    - method: 'random', the indices are randomly selected without replacement,
+              'block', the training indices are the int(Training_prop*N)
+                      first indices
+                      
+    OUTPUT
+    List of Nsim arrays of training indices
+    '''
+    
+    indref = np.arange(N)
+    Ntrain = int(N*Training_prop)
+    training_indices = []
+    
+    if method == 'random':
+        
+        for i in range(Nsim): 
+        
+            indpermut = np.random.permutation(indref)
+            indtrain = indpermut[0:Ntrain]
+            indtest = indpermut[Ntrain:]
+            indtrain = np.sort(indtrain)
+            indtest = np.sort(indtest)
+            
+            training_indices.append([indtrain, indtest])
+            
+    if method == 'block':
+        
+        Ntry = min(Nsim, int((1-Training_prop)*N))
+        for i in range(Ntry): 
+        
+            indtrain = indref[i:i+Ntrain]
+            indtest = np.concatenate((indref[:i],indref[i+Ntrain:]))
+            
+            training_indices.append([indtrain, indtest])
+            
+        
+    return(training_indices)
+
+
+
+      
+    
+def crossval(T,y0,W2, omega_peaks, Mat, Nsim = 200,  
+                                     method='random',
+                                     Training_prop=0.6):
+    
+    '''
+    Computes the cross validation score of the couple (W2, omega_peaks, Mat), 
+    that is the noise model, frequencies and null hypothesis model. A linear model 
+    [Mat, cos(omega_peaks[0] * T), sin(omega_peaks[0] * T), ..., cos(omega_peaks[-1] * T), sin(omega_peaks[-1] * T)]
+    where cos(omega_peaks[0] * T) and sin(omega_peaks[0] * T) are column cectors
+    is fitted onto training sets defined by training_indices and the likelihood
+    of the predicted model is computed on the test sets. 
+    
+    INPUTS:
+    - T: time stamps (np array)
+    - y0: data (np array of same size as T)
+    - W2: inverse of the covariance matrix
+    - omega_peaks: np array of frequencies of signals assumed to be in the data
+    - Mat: linear model of the null hypothesis len(T) x p, p>0
+    - training_indices: List of Nsim arrays of training indices
+    OUTPUT
+    - meanLikelihood: mean value of the likelihood evaluated on the Nsim test sets
+    - medianLikelihood: median value of the likelihood evaluated on the Nsim test sets
+    - loglikelihood_all_data: likelihood of the model on the whole timeseries
+    '''
+    N = len(T)
+    training_indices = training_sets(N, Nsim=Nsim, 
+                                     Training_prop = Training_prop, 
+                                     method = method)
+   # Nsim = len(training_indices)    
+    loglikelihoods = np.zeros(Nsim)
+  
+    L = np.linalg.cholesky(W2)
+    chi2_all = residuals(T, y0, W2, omega_peaks, Mat, return_only_chi2 = True)
+   
+    halflogdet_all_data = np.sum(np.log(np.diag(L)))
+    C_all = 0.5*len(T)*np.log(2*np.pi)
+
+    loglikelihood_all_data = - 0.5*chi2_all  \
+                     - C_all \
+                     + halflogdet_all_data
+                     
+    #print('training_indices  ',len(training_indices))
+    
+    for i in range(Nsim): 
+        
+
+        indtrain = training_indices[i][0]
+        indtest = training_indices[i][1]
+        Ntest = len(indtest)
+        C = 0.5*Ntest*np.log(2*np.pi)
+        
+        Ttrain = T[indtrain]
+        y0train = y0[indtrain]
+        W2train = W2[:,indtrain]
+        W2train = W2train[indtrain,:]
+       
+        Ttest = T[indtest]
+        y0test = y0[indtest]
+        W2test = W2[:,indtest]
+        W2test = W2test[indtest,:]    
+        
+        Mattrain = Mat[indtrain,:]
+        Mattest= Mat[indtest,:]
+        
+        restrain, xtrain = residuals( Ttrain, y0train, 
+                                 W2train, omega_peaks, 
+                                 Mattrain, return_matrix = False)
+        
+        
+        restest,xtest, Atest = residuals( Ttest, y0test, 
+                                 W2test, omega_peaks, 
+                                 Mattest, return_matrix = True)    
+        
+        model_prediction = Atest.dot(xtrain)
+        respred = y0test - model_prediction 
+        Ltest = np.linalg.cholesky(W2test)
+        aux = Ltest.dot(respred)
+        chi2_prediction = aux.dot(aux)
+        halflogdet = np.sum(np.log(np.diag(Ltest)))
+        
+        loglikelihood_prediction = - 0.5*chi2_prediction  \
+                                -  C \
+                                + halflogdet #Det of W2 not covariance mat
+             
+                                
+        loglikelihoods[i] = loglikelihood_prediction
+        
+    meanlogLikelihood = np.mean(loglikelihoods)
+    medianlogLikelihood = np.median(loglikelihoods)
+    
+    return(meanlogLikelihood,medianlogLikelihood, loglikelihood_all_data)
+
+
+    
+    
+
+
+
+
+    
