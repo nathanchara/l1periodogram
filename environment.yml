@@ -1,0 +1,6 @@
+name: environment
+dependencies:
+- numpy 
+- matplotlib
+- pandas
+- time
