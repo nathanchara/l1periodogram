@@ -466,7 +466,7 @@ class l1p_class():
         frequency spacing is equal to deltaOmega = 2*np.pi/self.Tobs/oversampling
         and the grid spans from deltaOmega to omegamax
         '''
-        Nomega = np.int(omegamax/(2*np.pi)*self.Tobs*oversampling)
+        Nomega = int(omegamax/(2*np.pi)*self.Tobs*oversampling)
         self.omegas = np.arange(1,Nomega+1) / \
                       Nomega*omegamax
         
@@ -702,7 +702,7 @@ class l1p_class():
     
         # Define the grid indices for which the smoothing is computed
         #active_omegas = np.mod(self.active_set, Nomega)
-        active_omegas = np.floor(np.array(self.active_set)/self.Nphi).astype(np.int)
+        active_omegas = np.floor(np.array(self.active_set)/self.Nphi).astype(int)
         index_smooth = []
         for i in active_omegas:
             ind1 = max(i - smoothwidth , 0)
