@@ -1025,7 +1025,7 @@ class l1p_class():
         
         if save:
             string_save = self.starname.replace(' ', '_') + '_l1_periodogram_period.pdf'
-            plt.savefig(string_save, format='pdf', rasterized = True)
+            plt.savefig(string_save + '.pdf')
 
     
         
@@ -1073,8 +1073,7 @@ class l1p_class():
         
         fig = plt.figure(figsize=(10, 4))
         plt.plot(self.periods, self.smoothed_solution, linewidth=1.7,
-                 label=r'$\ell_1$' +' periodogram', color=bluematlab
-                 , rasterized = True)
+                 label=r'$\ell_1$' +' periodogram', color=bluematlab )
         if number_highlighted_peaks>0:
             periods_maxpeaks = periods_plot
         maxperiod = self.periods[0]
@@ -1185,8 +1184,7 @@ class l1p_class():
         
         if save:
             string_save = self.starname.replace(' ', '_') + '_l1_periodogram_notext.pdf'
-            plt.savefig(string_save , rasterized = True,
-                        format='pdf')
+            plt.savefig(string_save + '.pdf')
 
 
 
