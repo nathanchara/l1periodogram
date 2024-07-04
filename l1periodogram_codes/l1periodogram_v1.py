@@ -1025,7 +1025,7 @@ class l1p_class():
         
         if save:
             string_save = self.starname.replace(' ', '_') + '_l1_periodogram_period.pdf'
-            plt.savefig(string_save + '.pdf')
+            plt.savefig(string_save)
 
     
         
@@ -1184,7 +1184,7 @@ class l1p_class():
         
         if save:
             string_save = self.starname.replace(' ', '_') + '_l1_periodogram_notext.pdf'
-            plt.savefig(string_save + '.pdf')
+            plt.savefig(string_save)
 
 
 
